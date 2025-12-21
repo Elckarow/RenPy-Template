@@ -1,0 +1,6 @@
+*.rpyc
+*.txt
+saves/
+cache/
+.vscode/*
+*.bak
