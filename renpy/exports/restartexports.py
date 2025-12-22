@@ -106,7 +106,7 @@ def reload_script():
         utter_restart()
 
 
-def quit(relaunch=False, status=0, save=False):
+def quit(relaunch=False, status=0, save=False):  # @ReservedAssignment
     """
     :doc: other
 
@@ -129,8 +129,6 @@ def quit(relaunch=False, status=0, save=False):
 
     if renpy.exports.has_label("quit"):
         renpy.exports.call_in_new_context("quit")
-
-    status |= renpy.test.testexecution.quit_handler()
 
     raise renpy.game.QuitException(relaunch=relaunch, status=status)
 

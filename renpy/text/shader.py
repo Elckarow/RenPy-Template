@@ -49,7 +49,7 @@ def to_uniform_value(shader_name, uniform_name, variable_types, value):
 
     if uniform_name in variable_types:
         if variable_types[uniform_name] == "color":
-            return renpy.color.Color(value).premultiplied
+            return renpy.easy.color(value).premultiplied
 
     type = variable_types.get(uniform_name, None)
 
@@ -60,7 +60,7 @@ def to_uniform_value(shader_name, uniform_name, variable_types, value):
         if type == "sampler2D":
             value = renpy.easy.displayable(value)
         elif value.startswith("#"):
-            value = renpy.color.Color(value).premultiplied
+            value = renpy.easy.color(value).premultiplied
         else:
             try:
                 value = value.lstrip("(").rstrip(")")

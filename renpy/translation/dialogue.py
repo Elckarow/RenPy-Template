@@ -171,7 +171,7 @@ def what_filter(s):
 class DialogueFile(object):
     def __init__(
         self, filename, output, tdf=True, strings=False, notags=True, escape=True, language=None
-    ):
+    ):  # @ReservedAssignment
         """
         `filename`
             The file we're extracting dialogue from.
@@ -217,8 +217,6 @@ class DialogueFile(object):
 
         translator = renpy.game.script.translator
 
-        prior_who = ""
-
         for label, t in translator.file_translates[self.filename]:
             if label is None:
                 label = ""
@@ -243,11 +241,6 @@ class DialogueFile(object):
                         who = ""
                     else:
                         who = n.who
-
-                    if who in renpy.config.extend_like_characters:
-                        who = who + " " + prior_who
-                    else:
-                        prior_who = who
 
                     what = n.what
 
@@ -293,7 +286,7 @@ class DialogueFile(object):
             line = ss.line
             s = ss.text
 
-            stl = renpy.game.script.translator.strings[None]
+            stl = renpy.game.script.translator.strings[None]  # @UndefinedVariable
 
             # don't include s in common.rpym
             if s in stl.translations:

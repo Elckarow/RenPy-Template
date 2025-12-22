@@ -214,7 +214,7 @@ def parse_menu(stmtl, loc, arguments):
     has_caption = False
 
     with_ = None
-    set = None
+    set = None  # @ReservedAssignment
 
     # Tuples of (label, condition, block)
     items = []
@@ -229,7 +229,7 @@ def parse_menu(stmtl, loc, arguments):
             continue
 
         if l.keyword("set"):
-            set = l.require(l.simple_expression)
+            set = l.require(l.simple_expression)  # @ReservedAssignment
             l.expect_eol()
             l.expect_noblock("set menuitem")
 
@@ -1220,18 +1220,22 @@ def screen_statement(l, loc):
 
 @statement("testcase")
 def testcase_statement(l, loc):
-    test = renpy.test.testparser.testcase_statement(l, loc)
+    name = l.require(l.name)
+    l.require(":")
+    l.expect_eol()
+    l.expect_block("testcase statement")
 
-    rv = renpy.ast.Testcase(loc, test)
+    ll = l.subblock_lexer()
+    ll.set_global_label(name)
 
-    return rv
+    test = renpy.test.testparser.parse_block(ll, loc)
 
+    l.advance()
 
-@statement("testsuite")
-def testsuite_statement(l, loc):
-    test = renpy.test.testparser.testsuite_statement(l, loc)
+    rv = ast.Testcase(loc, name, test)
 
-    rv = renpy.ast.Testcase(loc, test)
+    if not l.init:
+        rv = ast.Init(loc, [rv], 500 + l.init_offset)
 
     return rv
 
@@ -1389,7 +1393,7 @@ def style_statement(l, loc):
         if l.keyword("del"):
             propname = l.require(l.name)
 
-            if propname not in renpy.style.prefixed_all_properties:
+            if propname not in renpy.style.prefixed_all_properties:  # @UndefinedVariable
                 l.error("style property %s is not known." % propname)
 
             rv.delattr.append(propname)  # type: ignore
@@ -1408,7 +1412,7 @@ def style_statement(l, loc):
         if propname is not None:
             if (propname != "properties") and (
                 propname not in renpy.style.prefixed_all_properties
-            ):
+            ):  # @UndefinedVariable
                 l.error("style property %s is not known." % propname)
 
             if propname in rv.properties:  # type: ignore

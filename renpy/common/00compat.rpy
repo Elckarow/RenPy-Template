@@ -47,13 +47,12 @@ init -1100 python:
             config.images_directory = "images"
             config.image_directories = [ ]
             store.pygame_sdl2 = renpy.pygame
-            config.maximum_embiggens = False
 
         if version <= (8, 3, 99):
             config.old_show_expression = True
             config.cds_label_callbacks = False
             config.mesh_pad_compat = True
-            config.zoom_zaxis = False
+            config.zoom_zaxis = True
 
         if _compat_versions(version, (7, 7, 99), (8, 2, 99)):
             config.character_callback_compat = True

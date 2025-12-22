@@ -68,7 +68,7 @@ class Editor(object):
         Ends an editor transaction.
         """
 
-    def open(self, filename, line=None, **kwargs):
+    def open(self, filename, line=None, **kwargs):  # @ReservedAssignment
         """
         Ensures `filename` is open in the editor. This may be called multiple
         times per transaction.
@@ -91,7 +91,7 @@ class Editor(object):
 
 
 class SystemEditor(Editor):
-    def open(self, filename, line=None, **kwargs):
+    def open(self, filename, line=None, **kwargs):  # @ReservedAssignment
         filename = renpy.exports.fsencode(filename)
 
         try:

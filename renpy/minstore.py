@@ -27,7 +27,7 @@ from typing import Callable, Any, Self, Literal, cast, overload, final, override
 
 xrange = range
 
-unicode = str
+unicode = str  # @ReservedAssignment
 
 python_list = _list = list
 python_dict = _dict = dict
@@ -38,11 +38,11 @@ _type = type
 
 from renpy.revertable import RevertableList as __renpy__list__
 
-list = __renpy__list__
+list = __renpy__list__  # @ReservedAssignment
 
 from renpy.revertable import RevertableDict as __renpy__dict__
 
-dict = __renpy__dict__
+dict = __renpy__dict__  # @ReservedAssignment
 
 from renpy.revertable import RevertableDefaultDict as __renpy_defaultdict__
 
@@ -50,17 +50,17 @@ defaultdict = __renpy_defaultdict__
 
 from renpy.revertable import RevertableSet as __renpy__set__
 
-set = __renpy__set__
+set = __renpy__set__  # @ReservedAssignment
 Set = __renpy__set__
 
-from renpy.revertable import RevertableObject as object
+from renpy.revertable import RevertableObject as object  # @UnusedImport
 
-from renpy.revertable import revertable_range as range
-from renpy.revertable import revertable_sorted as sorted
+from renpy.revertable import revertable_range as range  # @UnusedImport
+from renpy.revertable import revertable_sorted as sorted  # @UnusedImport
 
 from renpy.revertable import MultiRevertable
 
-import renpy.ui as ui
+import renpy.ui as ui  # @UnusedImport
 
 from renpy.python import store_eval as eval
 

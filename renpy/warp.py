@@ -67,7 +67,7 @@ def warp():
     seenset = set(renpy.game.script.namemap.values())
 
     # This is called to indicate that next can be executed following node.
-    def add(node, next):
+    def add(node, next):  # @ReservedAssignment
         if next is None:
             return
 

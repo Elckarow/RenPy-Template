@@ -376,11 +376,7 @@ let on_video_end = (c) => {
 
 
 renpyAudio.set_channel_count = (count) => {
-    try {
-        context.destination.channelCount = count;
-    } catch (e) {
-        console.warn("Cannot set channel count:", e);
-    }
+    context.destination.channelCount = count;
 }
 
 

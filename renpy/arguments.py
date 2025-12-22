@@ -240,7 +240,7 @@ def run():
         renpy.session["_warped"] = True
         renpy.warp.warp_spec = args.warp
 
-    if args.profile_display:
+    if args.profile_display:  # @UndefinedVariable
         renpy.config.profile = True
 
     if args.debug_image_cache:
@@ -249,7 +249,7 @@ def run():
     return True
 
 
-def compile():
+def compile():  # @ReservedAssignment
     """
     This command forces the game script to be recompiled.
     """
@@ -259,7 +259,7 @@ def compile():
     return False
 
 
-def quit():
+def quit():  # @ReservedAssignment
     """
     This command is used to quit without doing anything.
     """

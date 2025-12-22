@@ -106,7 +106,7 @@ class ImageFont(object):
             return rv
 
         for c in s:
-            g = textsupport.Glyph()
+            g = textsupport.Glyph()  # @UndefinedVariable
 
             g.character = ord(c)
             g.ascent = self.baseline
@@ -161,14 +161,6 @@ class ImageFont(object):
 
             target.blit(char_surf, (x, y))
 
-    @staticmethod
-    def load_image(filename: str) -> pygame.Surface:
-        """
-        Loads an image from a file, and converts it to a surface with premultiplied alpha.
-        """
-        surf = renpy.display.im.Image(filename).load(unscaled=True)
-        return renpy.display.module.premultiply_alpha(surf)
-
 
 class SFont(ImageFont):
     def __init__(self, filename, spacewidth, default_kern, kerns, charset, baseline=None):
@@ -188,7 +180,7 @@ class SFont(ImageFont):
         self.offsets = {}  # W0201
 
         # Load in the image.
-        surf = self.load_image(self.filename)
+        surf = renpy.display.im.Image(self.filename).load(unscaled=True)
 
         sw, sh = surf.get_size()
         height = sh
@@ -268,7 +260,7 @@ class MudgeFont(ImageFont):
         self.offsets = {}  # W0201
 
         # Load in the image.
-        surf = self.load_image(self.filename)
+        surf = renpy.display.im.Image(self.filename).load(unscaled=True)
 
         # Parse the xml file.
         with renpy.loader.load(self.xml, directory="fonts") as f:
@@ -348,7 +340,7 @@ def parse_bmfont_line(l):
     if not line:
         line = [""]
 
-    map = dict(i.split("=", 1) for i in line[1:])
+    map = dict(i.split("=", 1) for i in line[1:])  # @ReservedAssignment
     return line[0], map
 
 
@@ -378,7 +370,7 @@ class BMFont(ImageFont):
                     self.height = int(args["lineHeight"])  # W0201
                     self.baseline = int(args["base"])  # W0201
                 elif kind == "page":
-                    pages[int(args["id"])] = self.load_image(args["file"])
+                    pages[int(args["id"])] = renpy.display.im.Image(args["file"]).load(unscaled=True)
                 elif kind == "char":
                     c = chr(int(args["id"]))
                     x = int(args["x"])
@@ -676,9 +668,9 @@ def load_face(fn, shaper):
         raise Exception("Could not find font {0!r}.".format(orig_fn))
 
     if shaper == "harfbuzz":
-        rv = hbfont.HBFace(font_file, index, orig_fn)
+        rv = hbfont.HBFace(font_file, index, orig_fn)  # @UndefinedVariable
     else:
-        rv = ftfont.FTFace(font_file, index, orig_fn)
+        rv = ftfont.FTFace(font_file, index, orig_fn)  # @UndefinedVariable
 
     face_cache[key] = rv
 
@@ -760,11 +752,11 @@ def get_font(fn, size, bold, italics, outline, antialias, vertical, hinting, sca
     if shaper == "harfbuzz":
         rv = hbfont.HBFont(
             face, int(size * scale), bold, italics, outline, antialias, vertical, hinting, instance, axis, features
-        )
+        )  # @UndefinedVariable
     else:
         rv = ftfont.FTFont(
             face, int(size * scale), bold, italics, outline, antialias, vertical, hinting
-        )
+        )  # @UndefinedVariable
 
     font_cache[key] = rv
 

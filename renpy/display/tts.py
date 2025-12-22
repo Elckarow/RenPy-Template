@@ -392,7 +392,7 @@ def displayable(d):
 
     while True:
         try:
-            s = d._tts_all(raw=False)
+            s = d._tts_all()
             break
         except TTSRoot:
             if d is root:

@@ -19,6 +19,9 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+from __future__ import division, absolute_import, with_statement, print_function, unicode_literals
+from renpy.compat import PY2, basestring, bchr, bord, chr, open, pystr, range, round, str, tobytes, unicode  # *
+
 import random
 
 import renpy
@@ -27,22 +30,21 @@ from renpy.pyanalysis import Analysis, NOT_CONST, GLOBAL_CONST
 
 
 def late_imports():
-    global Displayable, Matrix, Camera, position
+    global Displayable, Matrix, Camera
 
-    from renpy.display.position import position
     from renpy.display.displayable import Displayable
     from renpy.display.matrix import Matrix
     from renpy.display.transform import Camera
 
 
 def compiling(loc):
-    file, number = loc
+    file, number = loc  # @ReservedAssignment
 
     renpy.game.exception_info = "Compiling ATL code at %s:%d" % (file, number)
 
 
 def executing(loc):
-    file, number = loc
+    file, number = loc  # @ReservedAssignment
 
     renpy.game.exception_info = "Executing ATL code at %s:%d" % (file, number)
 
@@ -72,6 +74,89 @@ def pause(t):
 @atl_warper
 def instant(t):
     return 1.0
+
+
+class position(object):
+    """
+    A combination of relative and absolute coordinates.
+    """
+
+    __slots__ = ("absolute", "relative")
+
+    def __new__(cls, absolute=0, relative=None):
+        """
+        If passed two parameters, takes them as an absolute and a relative.
+        If passed only one parameter, converts it.
+        Using __new__ so that passing a position returns it unchanged.
+        """
+        if relative is None:
+            self = cls.from_any(absolute)
+        else:
+            self = object.__new__(cls)
+            self.absolute = absolute
+            self.relative = relative
+        return self
+
+    @classmethod
+    def from_any(cls, other):
+        if isinstance(other, cls):
+            return other
+        elif type(other) is float:
+            return cls(0, other)
+        else:
+            return cls(other, 0)
+
+    def simplify(self):
+        """
+        Tries to represent this position as an int, float, or absolute, if
+        possible.
+        """
+
+        if self.relative == 0.0:
+            if self.absolute == int(self.absolute):
+                return int(self.absolute)
+            else:
+                return renpy.display.core.absolute(self.absolute)
+        elif self.absolute == 0:
+            return float(self.relative)
+        else:
+            return self
+
+    def __add__(self, other):
+        if isinstance(other, position):
+            return position(self.absolute + other.absolute, self.relative + other.relative)
+        # elif isinstance(other, (int, float)):
+        #     return self + position.from_any(other)
+        return NotImplemented
+
+    __radd__ = __add__
+
+    def __sub__(self, other):
+        return self + -other
+
+    def __rsub__(self, other):
+        return other + -self
+
+    def __mul__(self, other):
+        if isinstance(other, (int, float)):
+            return position(self.absolute * other, self.relative * other)
+        return NotImplemented
+
+    __rmul__ = __mul__
+
+    def __truediv__(self, other):
+        if isinstance(other, (int, float)):
+            return self * (1 / other)
+        return NotImplemented
+
+    def __pos__(self):
+        return position(renpy.display.core.absolute(self.absolute), float(self.relative))
+
+    def __neg__(self):
+        return -1 * self
+
+    def __repr__(self):
+        return "position(absolute={}, relative={})".format(self.absolute, self.relative)
 
 
 class DualAngle(object):
@@ -189,7 +274,7 @@ def interpolate(t, a, b, typ):
             if renpy.config.mixed_position:
                 a = position.from_any(a)
                 b = position.from_any(b)
-                return a + t * (b - a)
+                return (1 - t) * a + t * b  # same result, faster execution
             else:
                 typ = type(b)
 
@@ -304,7 +389,7 @@ class Context(object):
     def __init__(self, context):
         self.context = context
 
-    def eval(self, expr):
+    def eval(self, expr):  # @ReservedAssignment
         return renpy.python.py_eval(expr, locals=self.context)
 
     def __eq__(self, other):
@@ -316,8 +401,6 @@ class Context(object):
     def __ne__(self, other):
         return not (self == other)
 
-    def __repr__(self):
-        return "Context({})".format(repr(self.context))
 
 class ATLTransformBase(renpy.object.Object):
     """
@@ -558,7 +641,6 @@ class ATLTransformBase(renpy.object.Object):
         #     else:
         #         scope[kwargs_param_name] = var_kwargs
 
-
         scope.update(new_scope)
 
         if child is None:
@@ -615,7 +697,7 @@ class ATLTransformBase(renpy.object.Object):
 
         return rv
 
-    def compile(self):
+    def compile(self):  # @ReservedAssignment
         """
         Compiles the ATL code into a block. As necessary, updates the
         properties.
@@ -753,7 +835,7 @@ class RawStatement(object):
 
     # Compiles this RawStatement into a Statement, by using ctx to
     # evaluate expressions as necessary.
-    def compile(self, ctx):
+    def compile(self, ctx):  # @ReservedAssignment
         raise Exception("Compile not implemented.")
 
     # Predicts the images used by this statement.
@@ -838,7 +920,7 @@ class RawBlock(RawStatement):
 
         self.animation = animation
 
-    def compile(self, ctx):
+    def compile(self, ctx):  # @ReservedAssignment
         compiling(self.loc)
 
         statements = [i.compile(ctx) for i in self.statements]
@@ -1125,7 +1207,7 @@ class RawMultipurpose(RawStatement):
     def add_spline(self, name, exprs):
         self.splines.append((name, exprs))
 
-    def compile(self, ctx):
+    def compile(self, ctx):  # @ReservedAssignment
         compiling(self.loc)
 
         # Figure out what kind of statement we have. If there's no
@@ -1283,7 +1365,7 @@ class RawContainsExpr(RawStatement):
 
         self.expression = expr
 
-    def compile(self, ctx):
+    def compile(self, ctx):  # @ReservedAssignment
         compiling(self.loc)
         child = ctx.eval(self.expression)
         return Child(self.loc, child, None)
@@ -1299,7 +1381,7 @@ class RawChild(RawStatement):
 
         self.children = [child]
 
-    def compile(self, ctx):
+    def compile(self, ctx):  # @ReservedAssignment
         children = []
 
         for i in self.children:
@@ -1627,7 +1709,7 @@ class RawRepeat(RawStatement):
 
         self.repeats = repeats
 
-    def compile(self, ctx):
+    def compile(self, ctx):  # @ReservedAssignment
         compiling(self.loc)
 
         repeats = self.repeats
@@ -1659,7 +1741,7 @@ class RawParallel(RawStatement):
         super(RawParallel, self).__init__(loc)
         self.blocks = [block]
 
-    def compile(self, ctx):
+    def compile(self, ctx):  # @ReservedAssignment
         return Parallel(self.loc, [i.compile(ctx) for i in self.blocks])
 
     def predict(self, ctx):
@@ -1734,7 +1816,7 @@ class RawChoice(RawStatement):
 
         self.choices = [(chance, block)]
 
-    def compile(self, ctx):
+    def compile(self, ctx):  # @ReservedAssignment
         compiling(self.loc)
         return Choice(self.loc, [(ctx.eval(chance), block.compile(ctx)) for chance, block in self.choices])
 
@@ -1807,7 +1889,7 @@ class RawTime(RawStatement):
         super(RawTime, self).__init__(loc)
         self.time = time
 
-    def compile(self, ctx):
+    def compile(self, ctx):  # @ReservedAssignment
         compiling(self.loc)
         return Time(self.loc, ctx.eval(self.time))
 
@@ -1837,7 +1919,7 @@ class RawOn(RawStatement):
         for i in names:
             self.handlers[i] = block
 
-    def compile(self, ctx):
+    def compile(self, ctx):  # @ReservedAssignment
         compiling(self.loc)
 
         handlers = {}
@@ -1957,7 +2039,7 @@ class RawEvent(RawStatement):
 
         self.name = name
 
-    def compile(self, ctx):
+    def compile(self, ctx):  # @ReservedAssignment
         return Event(self.loc, self.name)
 
     def mark_constant(self, analysis):
@@ -1980,7 +2062,7 @@ class RawFunction(RawStatement):
 
         self.expr = expr
 
-    def compile(self, ctx):
+    def compile(self, ctx):  # @ReservedAssignment
         compiling(self.loc)
         return Function(self.loc, ctx.eval(self.expr))
 

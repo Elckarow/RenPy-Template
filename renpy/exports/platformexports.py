@@ -68,7 +68,7 @@ def vibrate(duration):
         duration = 0.01
 
     if renpy.android:
-        import android
+        import android  # @UnresolvedImport
 
         android.vibrate(duration)
 
@@ -159,11 +159,11 @@ def get_on_battery():
 
     global old_battery
 
-    pi = pygame.power.get_power_info()
+    pi = pygame.power.get_power_info()  # @UndefinedVariable
 
-    if pi.state == pygame.POWERSTATE_UNKNOWN:
+    if pi.state == pygame.POWERSTATE_UNKNOWN:  # @UndefinedVariable
         return old_battery
-    elif pi.state == pygame.POWERSTATE_ON_BATTERY:
+    elif pi.state == pygame.POWERSTATE_ON_BATTERY:  # @UndefinedVariable
         old_battery = True
         return True
     else:

@@ -1,5 +1,5 @@
 branch = 'master'
-nightly = False
+nightly = True
 official = True
-version = '8.5.0.25111603'
-version_name = 'In Good Health'
+version = '8.5.0.25091501'
+version_name = 'TBD'

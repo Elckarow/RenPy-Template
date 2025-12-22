@@ -19,34 +19,9 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import enum
-from typing import TypeAlias, Any
 
-NodeState: TypeAlias = Any
-NodeLocation: TypeAlias = tuple[str, int]
-Position: TypeAlias = tuple[int | float, int | float]
+from __future__ import print_function
 
+from renpy.style cimport StyleCore
 
-class RenpyTestException(RuntimeError):
-    pass
-
-
-class RenpyTestAssertionError(AssertionError):
-    pass
-
-
-class RenpyTestScreenshotError(RenpyTestException):
-    pass
-
-
-class RenpyTestTimeoutError(TimeoutError):
-    pass
-
-
-class HookType(enum.Enum):
-    SETUP = "setup"
-    BEFORE_TESTSUITE = "before_testsuite"
-    BEFORE_TESTCASE = "before_testcase"
-    AFTER_TESTCASE = "after_testcase"
-    AFTER_TESTSUITE = "after_testsuite"
-    TEARDOWN = "teardown"
+include "styleclass.pxi"

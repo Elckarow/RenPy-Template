@@ -257,7 +257,7 @@ class Screen(renpy.object.Object):
 
         # If this is a SL2 screen, the SLScreen node at the root of this
         # screen.
-        if isinstance(function, renpy.sl2.slast.SLScreen):
+        if isinstance(function, renpy.sl2.slast.SLScreen):  # @UndefinedVariable
             self.ast = function
         else:
             self.ast = None
@@ -815,14 +815,14 @@ class ScreenDisplayable(renpy.display.layout.Container):
     def get_phase_name(self):
         return phase_name[self.phase]
 
-    def _tts(self, raw: bool) -> str:
+    def _tts(self):
         if (self.phase == OLD) or (self.phase == HIDE):
             return ""
 
         if self.modal:
-            return renpy.display.tts.TTSDone(self._tts_common(raw=raw))
+            return renpy.display.tts.TTSDone(self._tts_common())
         else:
-            return self._tts_common(raw=raw)
+            return self._tts_common()
 
 
 # The name of the screen that is currently being displayed, or
@@ -1537,7 +1537,7 @@ def current_screen():  # type: () -> ScreenDisplayable|None
     return _current_screen
 
 
-def get_displayable(screen, id, layer=None, base=False):
+def get_displayable(screen, id, layer=None, base=False):  # @ReservedAssignment
     """
     :doc: screens
     :name: renpy.get_displayable
@@ -1575,7 +1575,7 @@ def get_displayable(screen, id, layer=None, base=False):
 get_widget = get_displayable
 
 
-def get_displayable_properties(id, screen=None, layer=None):
+def get_displayable_properties(id, screen=None, layer=None):  # @ReservedAssignment
     """
     :doc: screens
     :name: renpy.get_displayable_properties

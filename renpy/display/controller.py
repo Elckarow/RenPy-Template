@@ -131,7 +131,7 @@ def exists():
         return False
 
 
-def quit(index):
+def quit(index):  # @ReservedAssignment
     """
     Quits the controller at index.
     """

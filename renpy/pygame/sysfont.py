@@ -250,7 +250,7 @@ def initsysfonts_win32():
         try:
             key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, key_name)
             keys.append(key)
-        except WindowsError:
+        except WindowsError: # @UndefinedVariable
             pass
 
     for key in keys:

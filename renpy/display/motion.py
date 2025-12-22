@@ -33,7 +33,7 @@ from renpy.display.render import render
 from renpy.display.layout import Container
 
 # Some imports are here to handle pickles of a moved class.
-from renpy.display.transform import Transform, Proxy, TransformState, ATLTransform, null
+from renpy.display.transform import Transform, Proxy, TransformState, ATLTransform, null  # @UnusedImport
 
 
 class Motion(Container):

@@ -416,6 +416,7 @@ class Grid(Container):
 
     allow_underfull = None
     gridmap = None
+    table = False
 
     def __init__(
         self,
@@ -428,6 +429,7 @@ class Grid(Container):
         *,
         right_to_left=False,
         bottom_to_top=False,
+        table=False,
         **properties,
     ):
         """
@@ -445,6 +447,10 @@ class Grid(Container):
 
         @params bottom_to_top: True if cells should be filled
         bottom to top.
+
+        @params table: True if elements sharing the same column should 
+        have the same width, and elements sharing the same row should
+        have the same height.
         """
 
         if padding is not None:
@@ -463,6 +469,8 @@ class Grid(Container):
 
         self.right_to_left = right_to_left
         self.bottom_to_top = bottom_to_top
+
+        self.table = table
 
     def render(self, width, height, st, at):
         xspacing = self.style.xspacing
@@ -504,23 +512,37 @@ class Grid(Container):
             renheight = (height - (rows - 1) * yspacing - top_margin - bottom_margin) // rows
 
         renders = [render(child, renwidth, renheight, st, at) for child in self.children]
-        sizes = [r.get_size() for r in renders]
 
-        cwidth = 0
-        cheight = 0
+        if self.table:
+            sizes_x, sizes_y = map(list, zip(*( i.get_size() for i in renders )))
 
-        for w, h in sizes:
-            cwidth = max(cwidth, w)
-            cheight = max(cheight, h)
+            cols_ws = [ max(sizes_x[i::cols]) for i in range(cols) ]
+            rows_hs = [ max(sizes_y[(cols * i):(cols * i) + cols:]) for i in range(rows) ]
+        
+        else:
+            sizes = [r.get_size() for r in renders]
+
+            cwidth = 0
+            cheight = 0
+
+            for w, h in sizes:
+                cwidth = max(cwidth, w)
+                cheight = max(cheight, h)
+
+            cols_ws = [cwidth] * cols        
+            rows_hs = [cheight] * rows
+
+        cswidth = sum(cols_ws)
+        csheight = sum(rows_hs)
 
         if self.style.xfill:
-            cwidth = renwidth
+            cswidth = renwidth
 
         if self.style.yfill:
-            cheight = renheight
+            csheight = renheight
 
-        width = cwidth * cols + xspacing * (cols - 1) + left_margin + right_margin
-        height = cheight * rows + yspacing * (rows - 1) + top_margin + bottom_margin
+        width = cswidth + xspacing * (cols - 1) + left_margin + right_margin
+        height = csheight + yspacing * (rows - 1) + top_margin + bottom_margin
 
         rv = renpy.display.render.Render(width, height)
 
@@ -532,10 +554,15 @@ class Grid(Container):
 
             surf = renders[i]
 
-            xpos = col * (cwidth + xspacing) + left_margin
-            ypos = row * (cheight + yspacing) + top_margin
+            y, x = divmod(i, cols)
 
-            offset = child.place(rv, xpos, ypos, cwidth, cheight, surf)
+            child_width = cols_ws[x]
+            child_height = rows_hs[y]
+
+            xpos = sum((cols_ws[xx] + xspacing) for xx in range(x)) + left_margin
+            ypos = sum((rows_hs[yy] + yspacing) for yy in range(y)) + top_margin
+
+            offset = child.place(rv, xpos, ypos, child_width, child_height, surf)
             self.offsets.append(offset)
 
         return rv
@@ -1293,11 +1320,11 @@ class MultiBox(Container):
 
         return None
 
-    def _tts(self, raw: bool) -> str:
+    def _tts(self):
         if self.layers or self.scene_list:
-            return self._tts_common(reverse=renpy.config.tts_front_to_back, raw=raw)
+            return self._tts_common(reverse=renpy.config.tts_front_to_back)
         else:
-            return self._tts_common(raw=raw)
+            return self._tts_common()
 
 
 def Fixed(**properties):
@@ -1376,16 +1403,11 @@ class Window(Container):
 
         xminimum, yminimum = xyminimums(style, width, height)
 
-        # Store the maximums for use below. When the type is float, a computation will have been done in
-        # renpy.display.render.render(), and used to set width and height. Rather than repeating that computation,
-        # we use the width and height as the maximums in that case.
-
-        xmaximum = style.xmaximum
-        ymaximum = style.ymaximum
+        xmaximum = self.style.xmaximum
+        ymaximum = self.style.ymaximum
 
         if type(xmaximum) is float:
             xmaximum = width
-
         if type(ymaximum) is float:
             ymaximum = height
 
@@ -2580,9 +2602,9 @@ class NearRect(Container):
         else:
             return None
 
-    def _tts(self, raw: bool) -> str:
+    def _tts(self):
         if self.parent_rect is not None:
-            return self._tts_common(raw=raw)
+            return self._tts_common()
         else:
             return ""
 

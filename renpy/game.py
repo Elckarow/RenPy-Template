@@ -115,7 +115,7 @@ class ExceptionInfo(object):
         The arguments that are percent-formatted with `s`.
     """
 
-    def __init__(self, s, args=()):
+    def __init__(self, s, args):
         self.s = s
         self.args = args
 
@@ -254,7 +254,7 @@ def context(index=-1) -> "renpy.execution.Context":
     return contexts[index]
 
 
-def invoke_in_new_context(callable, *args, **kwargs):
+def invoke_in_new_context(callable, *args, **kwargs):  # @ReservedAssignment
     """
     :doc: context
 
@@ -414,22 +414,10 @@ def call_replay(label, scope={}):
     renpy.exports.execute_default_statement()
 
     for k, v in renpy.config.replay_scope.items():
-        stores = k.split(".")
-        current_obj = renpy.store
-
-        for store in stores[:-1]:
-            current_obj = getattr(current_obj, store)
-
-        setattr(current_obj, stores[-1], v)
+        setattr(renpy.store, k, v)
 
     for k, v in scope.items():
-        stores = k.split(".")
-        current_obj = renpy.store
-
-        for store in stores[:-1]:
-            current_obj = getattr(current_obj, store)
-
-        setattr(current_obj, stores[-1], v)
+        setattr(renpy.store, k, v)
 
     renpy.store._in_replay = label
 

@@ -553,7 +553,7 @@ def display_say(
     cb_args,
     with_none,
     callback,
-    type,
+    type,  # @ReservedAssignment
     checkpoint=True,
     ctc_timedpause=None,
     ctc_force=False,
@@ -675,7 +675,7 @@ def display_say(
             retain_count += 1
             retain_tag = "_retain_{}".format(retain_count)
 
-            if not renpy.exports.get_screen(retain_tag, renpy.store.bubble.retain_layer):
+            if not renpy.exports.get_screen(retain_tag):
                 break
 
     # Call the begin callback.
@@ -830,7 +830,7 @@ def display_say(
                     ctc = None
 
             if interact or what_string or (what_ctc is not None) or (behavior and afm):
-                if not isinstance(what_text, renpy.text.text.Text):
+                if not isinstance(what_text, renpy.text.text.Text):  # @UndefinedVariable
                     raise Exception("The say screen (or show_function) must return a Text object.")
 
                 if what_ctc:

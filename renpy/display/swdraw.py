@@ -249,7 +249,7 @@ def copy_surface(surf):
     w, h = surf.get_size()
     rv = surface(w, h, True)
 
-    renpy.display.accelerator.nogil_copy(surf, rv)
+    renpy.display.accelerator.nogil_copy(surf, rv)  # @UndefinedVariable
     return rv
 
 
@@ -735,7 +735,7 @@ class SWDraw(object):
     def resize(self):
         return
 
-    def quit(self):
+    def quit(self):  # @ReservedAssignment
         return
 
     def translate_point(self, x, y):
