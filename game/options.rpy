@@ -1,17 +1,10 @@
-﻿## This file contains options that can be changed to customize your game.
-##
-## Lines beginning with two '#' marks are comments, and you shouldn't uncomment
-## them. Lines beginning with a single '#' mark are commented-out code, and you
-## may want to uncomment them when appropriate.
+﻿init -10 python:
+    gui.init(1920, 1080)
 
+# init python:
+#     config.variants.extend(("small", "touch"))
 
-## Basics ######################################################################
-
-## A human-readable name of the game. This is used to set the default window
-## title, and shows up in the interface and error reports.
-##
-## The _() surrounding the string marks it as eligible for translation.
-
+define config.autoreload = False
 define config.name = _("TEMPLATE")
 
 
