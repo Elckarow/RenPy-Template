@@ -4,3 +4,4 @@ saves/
 cache/
 .vscode/*
 *.bak
+project.json
