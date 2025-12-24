@@ -10,9 +10,15 @@ init python:
         style_object = getattr(style, name)
         return (lambda target: style_object,) + style.default.hyperlink_functions[1:]
 
+define gui.text_color = "#fff"
+define gui.text_accent_color = "#0099cc"
+define gui.text_idle_color = "#888888"
+define gui.text_hover_color = "#66c1e0"
+define gui.text_insensitive_color = "#8888887f"
+
 style text is empty:
     hyperlink_functions hyperlink_functions_style("hyperlink_text")
-    color "#fff"
+    color gui.text_color
     language "unicode"
     font "DejaVuSans.ttf"
     size 33
@@ -25,7 +31,7 @@ style hyperlink_text is text:
 
 style input is text:
     adjust_spacing False
-    color "#0099cc"
+    color gui.text_accent_color
 
 style button is empty:
     hover_sound    None
@@ -34,11 +40,11 @@ style button is empty:
 style button_text is text:
     yalign 0.5
 
-    idle_color "#888888"
-    hover_color "#66c1e0"
-    selected_idle_color "#ffffff"
-    selected_hover_color "#66c1e0"
-    insensitive_color "#8888887f"
+    idle_color gui.text_idle_color
+    hover_color gui.text_hover_color
+    selected_idle_color gui.text_color
+    selected_hover_color gui.text_hover_color
+    insensitive_color gui.text_insensitive_color
 
 style button_text variant "small":
     size 45
@@ -55,7 +61,7 @@ style label is empty
 style label_text is text:
     yalign 0.5
     size 36
-    color "#0099cc"
+    color gui.text_accent_color
 
 style label_text variant "small":
     size 51

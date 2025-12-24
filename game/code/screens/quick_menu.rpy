@@ -41,7 +41,7 @@ style quick_menu_button is button:
 style quick_menu_button_text is button_text:
     size 21
     idle_color "#aaaaaa"
-    selected_color "#0099cc"
+    selected_color gui.text_accent_color
 
 style quick_menu_button_text variant "small":
     size 30

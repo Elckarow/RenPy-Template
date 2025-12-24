@@ -65,7 +65,7 @@ style pref_label is label:
 
 style pref_label_text is label_text:
     yalign 1.0
-    color "#0099cc"
+    color gui.text_accent_color
 
 define gui.radio_button_borders = Borders(27, 6, 6, 6)
 

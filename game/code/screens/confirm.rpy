@@ -31,7 +31,7 @@ style confirm_label is label:
 style confirm_label_text is label_text:
     textalign 0.5
     layout "subtitle"
-    color "#fff"
+    color gui.text_color
     size 33
 
 style confirm_button is button

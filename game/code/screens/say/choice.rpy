@@ -22,7 +22,7 @@ style choice_button variant "small":
 
 style choice_button_text is button_text:
     xalign 0.5
-    hover_color "#fff"
+    hover_color gui.text_color
 
 style choice_button_text variant "small":
     size 45

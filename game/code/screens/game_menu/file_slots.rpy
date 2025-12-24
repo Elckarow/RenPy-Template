@@ -90,7 +90,6 @@ style slot_grid is empty:
 style slot_time_text is button_text:
     xalign 0.5 textalign 0.5
     size 21
-    # color "#494949"
 style slot_name_text is slot_time_text
 
 style page_label is button:
@@ -100,5 +99,5 @@ style page_label is button:
 style page_label_text is button_text:
     textalign 0.5 layout "subtitle"
     size 40
-    idle_color "#0099cc"
-    insensitive_color "#0099cc"
+    idle_color gui.text_accent_color
+    insensitive_color gui.text_accent_color

@@ -34,7 +34,7 @@ style say_namebox variant "small":
 
 style say_label is text:
     size 45
-    color "#0099cc"
+    color gui.text_accent_color
 
 style say_label variant "small":
     size 54

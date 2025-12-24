@@ -25,7 +25,7 @@ screen main_menu():
 
 style main_menu_version is text:
     xalign 1.0
-    color "#0099cc"
+    color gui.text_accent_color
 
 style main_menu_title is main_menu_version:
     size 75

@@ -37,5 +37,5 @@ style game_menu_title is label:
 
 style game_menu_title_text is label_text:
     size 75
-    color "#0099cc"
+    color gui.text_accent_color
     yalign 0.5
