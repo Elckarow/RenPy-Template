@@ -19,7 +19,7 @@ screen game_menu(title):
         key "game_menu" action ShowMenu("main_menu")
 
 screen game_menu_viewport(**properties):
-    viewport properties properties:
+    viewport style "empty" properties properties:
         mousewheel True draggable True
         scrollbars "vertical" side_yfill True
 
