@@ -15,10 +15,13 @@ init python:
     build.archive("assets")
     build.classify("game/assets/*", "assets all")
 
-    build.archive("scripts")
-    build.classify("game/code/*", "scripts all")
+    build.archive("code")
+    build.classify("game/code/*", "code all")
     build.classify("**.rpy", None)
-    build.classify("**.rpyc", "scripts all")
+    build.classify("**.rpyc", "code all")
+
+    build.archive("story")
+    build.classify("game/story/*", "story all")
 
     build.classify("game/cache/*.*", None)
     build.classify("game/saves/**", None)
