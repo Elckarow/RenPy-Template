@@ -52,6 +52,13 @@ define config.gl_test_image = "white"
 define config.skip_indicator = False
 define config.early_start_store = False
 
+define config.voice_filename_format = "assets/audio/voice/{filename}"
+
+define config.tag_zorder["cg"]    = 7
+define config.tag_zorder["white"] = 5
+define config.tag_zorder["black"] = 5
+define config.tag_zorder["bg"]    = 0
+
 init 500 python hide:
     config.window_auto_hide.remove("menu")
     
