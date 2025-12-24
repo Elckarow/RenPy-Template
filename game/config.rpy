@@ -30,48 +30,7 @@ init 500 python hide:
     
     # add_detached_layer("detached_layer_1")
 
-## A Google Play license key is required to perform in-app purchases. It can be
-## found in the Google Play developer console, under "Monetize" > "Monetization
-## Setup" > "Licensing".
-
-# define build.google_play_key = "..."
-
-## The username and project name associated with an itch.io project, separated
-## by a slash.
-
-# define build.itch_project = "renpytom/test-project"
-
-init python:
-    build.name = "TEMPLATE"
-
-    build.archive("assets")
-    build.classify("game/assets/*", "assets all")
-
-    build.archive("scripts")
-    build.classify("game/code/*", "scripts all")
-    build.classify("**.rpy", None)
-    build.classify("**.rpyc", "scripts all")
-
-    build.classify("game/cache/*.*", None)
-    build.classify("game/saves/**", None)
-    build.classify("**.md", None)
-    build.classify("**~", None)
-    build.classify("**.bak", None)
-    build.classify("**.DS_Store", None)
-    build.classify("**/.**", None)
-    build.classify("**/#**", None)
-    build.classify("**/thumbs.db", None)
-    build.classify("**.psd", None)
-    build.classify("**.sublime-project", None)
-    build.classify("**.sublime-workspace", None)
-    build.classify("script-regex.txt", None)
-
-    build.include_old_themes = False
-
-    build.documentation('*.html')
-    build.documentation('*.txt')
-
-#####################
+################################################################################
 # Config variables you (probably) don't need to change
 
 define config.narrator_menu = True
@@ -96,8 +55,8 @@ define config.early_start_store = False
 init 500 python hide:
     config.window_auto_hide.remove("menu")
     
-    if len(renpy.loadsave.location.locations) > 1: del(renpy.loadsave.location.locations[1])
-    _preferences.pad_enabled = False
+    if len(renpy.loadsave.location.locations) > 1:
+        del renpy.loadsave.location.locations[1]
 
     def force_integer_multiplier(width, height):
         if float(width) / float(height) < float(config.screen_width) / float(config.screen_height):
