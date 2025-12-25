@@ -19,7 +19,8 @@ define config.window = "auto"
 define config.window_show_transition = Dissolve(0.2)
 define config.window_hide_transition = Dissolve(0.2)
 
-define config.save_directory = "TEMPLATE-1766327398"
+# define config.save_directory = f"TEMPLATE_{"DEV" if config.developer else config.name.replace(".", "_").replace(" ", "_")}"
+define config.save_directory = (f"{config.name.replace(".", "_").replace(" ", "_")}_DEV" if config.developer else config.name.replace(".", "_").replace(" ", "_"))
 
 define config.window_icon = "assets/ui/window_icon.png"
 
@@ -35,7 +36,7 @@ init 500 python hide:
 
 define config.narrator_menu = True
 define config.linear_fades = True
-define config.developer = "auto"
+define -500 config.developer = "auto"
 define config.autoreload = False
 define config.has_sound = True
 define config.has_music = True
