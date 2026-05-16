@@ -32,15 +32,15 @@ screen preferences():
                     vbox:
                         if config.has_music:
                             label _("Music Volume")
-                            bar value Preference("music mixer volume")
+                            bar value Preference("mixer sound volume")
 
                         if config.has_sound:
                             label _("Sound Volume")
-                            bar value Preference("sound mixer volume")
+                            bar value Preference("mixer sound volume")
 
                         if config.has_voice:
                             label _("Voice Volume")
-                            bar value Preference("voice mixer volume")
+                            bar value Preference("mixer voice volume")
 
                         if config.has_music or config.has_sound or config.has_voice:
                             null height 15
