@@ -12,16 +12,18 @@
 init python:
     build.name = "TEMPLATE"
 
-    build.archive("assets")
-    build.classify("game/assets/*", "assets all")
+    build.archive("assets", "windows linux mac renpy")
+    build.classify("game/assets/**", "assets")
+    build.classify("game/images/**", "assets")
 
-    build.archive("code")
-    build.classify("game/code/*", "code all")
+    build.archive("code", "windows linux mac renpy")
+    build.classify("game/code/**", "code")
+    build.classify("game/libs/**", "code")
     build.classify("**.rpy", None)
-    build.classify("**.rpyc", "code all")
+    build.classify("**.rpyc", "code")
 
-    build.archive("story")
-    build.classify("game/story/*", "story all")
+    build.archive("story", "windows linux mac renpy")
+    build.classify("game/story/**", "story")
 
     build.classify("game/cache/*.*", None)
     build.classify("game/saves/**", None)

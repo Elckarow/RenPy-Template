@@ -1,4 +1,8 @@
-﻿init -10 python:
+﻿# for testing mobile ui
+# init -500 python:
+#     config.variants.extend(("small", "touch"))
+
+init -100 python:
     gui.init(1920, 1080)
 
 define config.name = _("TEMPLATE")
@@ -23,6 +27,9 @@ define config.window_hide_transition = Dissolve(0.2)
 define config.save_directory = (f"{config.name.replace(".", "_").replace(" ", "_")}_DEV" if config.developer else config.name.replace(".", "_").replace(" ", "_"))
 
 define config.window_icon = "assets/ui/window_icon.png"
+
+init 500 python hide:
+    renpy.music.register_channel("ambient", "ambient", True, tight=True)
 
 init 500 python hide:
     def add_detached_layer(layer):
@@ -53,7 +60,8 @@ define config.gl_test_image = "white"
 define config.skip_indicator = False
 define config.early_start_store = False
 
-define config.voice_filename_format = "assets/audio/voice/{filename}"
+define config.voice_filename_format = "assets/audio/voice/{filename}.ogg"
+define config.auto_voice = "assets/audio/voice/auto/{id}.ogg"
 
 define config.tag_zorder["cg"]    = 7
 define config.tag_zorder["white"] = 5
@@ -79,7 +87,3 @@ init 500 python hide:
 
     if config.developer:
         config.start_callbacks.append(lambda: renpy.run(Preference("rollback side", "left")))
-
-# for testing mobile ui
-# init -500 python:
-#     config.variants.extend(("small", "touch"))
