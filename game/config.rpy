@@ -9,21 +9,21 @@ define config.name = _("TEMPLATE")
 
 define config.version = "1.0"
 
-# define config.main_menu_music = "main-menu-theme.ogg"
+# define 5 config.main_menu_music = "main-menu-theme.ogg"
+
+define config.end_splash_transition = Dissolve(1.3)
 
 define config.enter_transition = dissolve
 define config.exit_transition  = dissolve
 define config.intra_transition = dissolve
 
 define config.after_load_transition = None
-
 define config.end_game_transition = None
 
 define config.window = "auto"
 define config.window_show_transition = Dissolve(0.2)
 define config.window_hide_transition = Dissolve(0.2)
 
-# define config.save_directory = f"TEMPLATE_{"DEV" if config.developer else config.name.replace(".", "_").replace(" ", "_")}"
 define config.save_directory = (f"{config.name.replace(".", "_").replace(" ", "_")}_DEV" if config.developer else config.name.replace(".", "_").replace(" ", "_"))
 
 define config.window_icon = "assets/ui/window_icon.png"
@@ -32,11 +32,15 @@ init 500 python hide:
     renpy.music.register_channel("ambient", "ambient", True, tight=True)
 
 init 500 python hide:
+    # config.layer_transforms[None] = [Flatten]
+
     def add_detached_layer(layer):
         config.detached_layers.append(layer)
         config.layer_clipping[layer] = (0, 0, config.screen_width, config.screen_height)
     
     # add_detached_layer("detached_layer_1")
+
+    renpy.add_layer("above_master", above="master", sticky=True)
 
 ################################################################################
 # Config variables you (probably) don't need to change
@@ -53,10 +57,10 @@ define config.autosave_on_quit = False
 define config.autosave_slots = 0
 define config.image_cache_size = 64
 define config.predict_statements = 50
-define config.rollback_enabled = config.developer
+define config.rollback_enabled = True
 define config.allow_skipping = True
 define config.gl2 = True
-define config.gl_test_image = "white"
+define config.gl_test_image = "black"
 define config.skip_indicator = False
 define config.early_start_store = False
 

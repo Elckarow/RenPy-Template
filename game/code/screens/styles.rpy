@@ -16,7 +16,7 @@ define gui.text_idle_color = "#888888"
 define gui.text_hover_color = "#66c1e0"
 define gui.text_insensitive_color = "#8888887f"
 
-style text is empty:
+style text is default:
     hyperlink_functions hyperlink_functions_style("hyperlink_text")
     color gui.text_color
     language "unicode"
