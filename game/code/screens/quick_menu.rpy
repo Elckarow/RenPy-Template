@@ -9,7 +9,7 @@ screen quick_menu():
 
     if quick_menu:
         hbox:
-        if config.rollback_enabled:
+            if config.rollback_enabled:
                 textbutton _("Back") action Rollback()
 
             if not renpy.variant("touch"):
